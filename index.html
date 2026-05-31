@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SOPORTE DEL MILLÓN | Terminal</title>
+    <title>CONTROL DEL MILLÓN | Terminal</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23030712%22 stroke=%22%2300e676%22 stroke-width=%228%22/><text y=%22.68em%22 x=%2250%25%22 font-family=%22monospace%22 font-size=%2255%22 font-weight=%22bold%22 fill=%22%2300e676%22 text-anchor=%22middle%22>%24</text></svg>">
     
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-black: #02040a;
-            --accent-emerald: #00e676;
+            --bg-black: #01060b;
+            --bg-panel: rgba(10, 16, 26, 0.7);
+            --accent-emerald: #00fa9a;
+            --accent-emerald-dark: #008f58;
             --accent-cyan: #00e5ff;
             --accent-amber: #ffb300;
             --text-main: #f3f4f6;
-            --text-muted: #6b7280;
+            --text-muted: #8b949e;
+            --border-glow: rgba(0, 250, 154, 0.15);
         }
 
         * {
@@ -25,12 +28,12 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Fondo Animado Magnético */
+        /* Fondo Interactivo y Marcado */
         body {
             background-color: var(--bg-black);
             color: var(--text-main);
             min-height: 100vh;
-            padding: 1.5rem 1rem;
+            padding: 2rem 1rem;
             position: relative;
             overflow-x: hidden;
         }
@@ -38,177 +41,152 @@
         body::before {
             content: '';
             position: fixed;
-            top: -50%; left: -50%; width: 200%; height: 200%;
+            top: -20%; left: -20%; width: 140%; height: 140%;
             background: 
-                radial-gradient(circle at 50% 50%, rgba(0, 230, 118, 0.03), transparent 60%),
-                radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.04), transparent 50%);
-            animation: rotateGlow 20s linear infinite;
+                radial-gradient(circle at 30% 30%, rgba(0, 250, 154, 0.08), transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(0, 143, 88, 0.06), transparent 45%);
+            animation: rotateGlow 25s ease-in-out infinite alternate;
             z-index: -1;
         }
 
         @keyframes rotateGlow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(15deg) scale(1.1); }
         }
 
         .container {
-            max-width: 480px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* Top Bar Animada */
+        /* Header Centrado */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding: 0 0.2rem;
+            text-align: center;
+            margin-bottom: 3rem;
         }
 
         header h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.6rem;
-            letter-spacing: -0.03em;
+            font-size: 2.2rem;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
-            background: linear-gradient(135deg, #ffffff 40%, var(--accent-emerald));
+            background: linear-gradient(180deg, #ffffff 20%, var(--accent-emerald));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
+            text-shadow: 0 0 25px rgba(0, 250, 154, 0.2);
         }
 
-        .live-badge {
+        /* Layout Grid para Escritorio vs Celular */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 900px) {
+            .dashboard-layout {
+                grid-template-columns: 340px 1fr;
+                align-items: start;
+            }
+        }
+
+        /* Panel Izquierdo (Controles y KPIs) */
+        .control-panel {
             display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--accent-emerald);
-            background: rgba(0, 230, 118, 0.08);
-            padding: 0.3rem 0.6rem;
-            border-radius: 20px;
-            border: 1px solid rgba(0, 230, 118, 0.3);
-            box-shadow: 0 0 10px rgba(0, 230, 118, 0.1);
+            flex-direction: column;
+            gap: 1.5rem;
+            position: sticky;
+            top: 2rem;
         }
 
-        .badge-dot {
-            width: 6px;
-            height: 6px;
-            background-color: var(--accent-emerald);
-            border-radius: 50%;
-            animation: pulseNeongreen 1.5s infinite alternate;
-        }
-
-        @keyframes pulseNeongreen {
-            from { box-shadow: 0 0 2px var(--accent-emerald); opacity: 0.8; }
-            to { box-shadow: 0 0 12px var(--accent-emerald), 0 0 20px var(--accent-emerald); opacity: 1; transform: scale(1.2); }
-        }
-
-        /* Selector Táctil Dinámico */
         .tab-slider {
             display: flex;
-            background: rgba(13, 17, 28, 0.8);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 0.3rem;
-            border-radius: 14px;
-            margin-bottom: 1.5rem;
-            backdrop-filter: blur(10px);
+            background: rgba(4, 9, 15, 0.8);
+            border: 1px solid var(--border-glow);
+            padding: 0.35rem;
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
         }
 
         .tab-btn {
             flex: 1;
             background: transparent;
             border: none;
-            color: #4b5563;
-            padding: 0.85rem;
-            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding: 1rem;
+            font-size: 0.9rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s ease;
         }
 
         .tab-btn.active {
-            background: linear-gradient(135deg, rgba(0, 230, 118, 0.1), rgba(0, 230, 118, 0.02));
+            background: rgba(0, 250, 154, 0.1);
             color: var(--accent-emerald);
-            border: 1px solid rgba(0, 230, 118, 0.3);
-            box-shadow: 0 0 15px rgba(0, 230, 118, 0.15);
+            border: 1px solid rgba(0, 250, 154, 0.4);
+            box-shadow: 0 0 20px rgba(0, 250, 154, 0.15);
         }
 
-        /* Panel Principal de Balance con Brillo */
         .summary-card {
-            background: linear-gradient(145deg, rgba(15, 20, 30, 0.9), rgba(10, 12, 18, 0.95));
-            border: 1px solid rgba(0, 230, 118, 0.2);
+            background: var(--bg-panel);
+            border: 1px solid var(--border-glow);
             border-radius: 20px;
             padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(0, 230, 118, 0.08);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            backdrop-filter: blur(15px);
         }
 
-        .summary-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 230, 118, 0.05), transparent);
-            animation: scanline 4s infinite linear;
+        .summary-item {
+            margin-bottom: 1.2rem;
+        }
+        .summary-item:last-child {
+            margin-bottom: 0;
+            padding-top: 1.2rem;
+            border-top: 1px dashed rgba(255,255,255,0.1);
         }
 
-        @keyframes scanline {
-            0% { left: -100%; }
-            100% { left: 200%; }
-        }
-
-        .summary-item :first-child {
+        .summary-item span {
             font-size: 0.75rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
             display: block;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.3rem;
         }
 
         .summary-item p {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
+            color: var(--text-main);
         }
 
         .summary-item.green p {
             color: var(--accent-emerald);
-            text-shadow: 0 0 15px rgba(0, 230, 118, 0.4);
-            animation: neonPulseText 2s infinite alternate;
+            text-shadow: 0 0 15px rgba(0, 250, 154, 0.3);
         }
 
-        @keyframes neonPulseText {
-            from { text-shadow: 0 0 5px rgba(0,230,118,0.2); }
-            to { text-shadow: 0 0 20px rgba(0,230,118,0.6); }
+        /* Panel Derecho (Lista de Gastos Extensible) */
+        .items-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
         }
 
-        .divider-line {
-            width: 1px;
-            height: 40px;
-            background: rgba(0, 230, 118, 0.2);
-        }
-
-        /* Tarjetas de Gastos Magnéticas */
-        .items-container {
-            display: flex;
-            flex-direction: column;
-            gap: 0.85rem;
-            margin-bottom: 2rem;
+        @media (min-width: 1100px) {
+            .items-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         .card-item {
-            background: rgba(18, 24, 38, 0.6);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 16px;
+            background: var(--bg-panel);
+            border: 1px solid rgba(255,255,255,0.03);
+            border-left: 3px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
             padding: 1.2rem;
             display: flex;
             justify-content: space-between;
@@ -217,24 +195,22 @@
             transition: all 0.3s ease;
         }
 
-        .card-item:hover, .card-item:active {
-            border-color: rgba(0, 229, 255, 0.3);
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
-            transform: translateY(-2px);
+        .card-item:hover {
+            border-left: 3px solid var(--accent-emerald);
+            background: rgba(15, 25, 40, 0.8);
+            transform: translateX(4px);
         }
 
         .card-details {
             display: flex;
             flex-direction: column;
-            gap: 0.35rem;
-            max-width: 65%;
+            gap: 0.4rem;
         }
 
         .card-title {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
-            color: #f3f4f6;
-            letter-spacing: -0.01em;
+            color: #ffffff;
         }
 
         .tag {
@@ -245,30 +221,27 @@
             font-size: 0.65rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.04em;
         }
 
-        .tag-seg { background: rgba(0, 229, 255, 0.08); color: var(--accent-cyan); border: 1px solid rgba(0,229,255,0.2); }
-        .tag-deuda { background: rgba(255, 179, 0, 0.08); color: var(--accent-amber); border: 1px solid rgba(255,179,0,0.2); }
-        .tag-fijo { background: rgba(156, 163, 175, 0.08); color: #d1d5db; border: 1px solid rgba(156,163,175,0.2); }
+        .tag-seg { background: rgba(0, 229, 255, 0.1); color: var(--accent-cyan); }
+        .tag-deuda { background: rgba(255, 179, 0, 0.1); color: var(--accent-amber); }
+        .tag-fijo { background: rgba(156, 163, 175, 0.1); color: #d1d5db; }
 
         .card-amount {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            text-align: right;
             color: #ffffff;
         }
 
-        /* Módulo Futuro Colapsable Recuperado y Mejorado */
+        /* Módulo Futuro */
         .collapsible-wrapper {
-            background: rgba(10, 15, 26, 0.6);
-            border: 1px solid rgba(0, 229, 255, 0.15);
-            border-radius: 20px;
+            background: rgba(4, 9, 15, 0.6);
+            border: 1px dashed rgba(0, 250, 154, 0.3);
+            border-radius: 16px;
             overflow: hidden;
-            margin-top: 1rem;
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 20px rgba(0, 250, 154, 0.02);
         }
 
         .collapsible-trigger {
@@ -280,52 +253,38 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            color: var(--accent-cyan);
+            color: var(--accent-emerald);
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
-
-        .arrow-icon {
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
-        }
-        .arrow-icon.open { transform: rotate(45deg); }
 
         .collapsible-content {
             padding: 0 1.2rem 1.2rem 1.2rem;
             display: none;
             flex-direction: column;
             gap: 1rem;
-            border-top: 1px solid rgba(0, 229, 255, 0.08);
-            animation: expandDown 0.3s ease forwards;
-        }
-
-        @keyframes expandDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            border-top: 1px solid rgba(0, 250, 154, 0.1);
         }
 
         .future-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px dashed rgba(0, 229, 255, 0.1);
+            padding: 0.5rem 0;
         }
-        .future-row:last-child { border-bottom: none; }
+        
         .future-row h4 { font-size: 0.85rem; font-weight: 600; color: #e5e7eb; }
         .future-row p { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;}
-        .future-val { font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--accent-cyan); text-shadow: 0 0 8px rgba(0,229,255,0.3);}
+        .future-val { font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--accent-emerald);}
 
-        /* Animación de entrada de tarjetas */
-        @keyframes fadeInCard {
-            from { opacity: 0; transform: translateY(15px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes fadeInList {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .animated-list {
-            animation: fadeInCard 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        .animated-grid {
+            animation: fadeInList 0.4s ease forwards;
         }
     </style>
 </head>
@@ -334,94 +293,89 @@
     <div class="container">
         <header>
             <h1>CONTROL DEL MILLÓN</h1>
-            <div class="live-badge">
-                <div class="badge-dot"></div>
-                <span>Matriz Activa</span>
-            </div>
         </header>
 
-        <div class="tab-slider">
-            <button class="tab-btn active" onclick="switchQuincena(15)">Corte 15</button>
-            <button class="tab-btn" onclick="switchQuincena(30)">Corte 30</button>
-        </div>
-
-        <div class="summary-card">
-            <div class="summary-item">
-                <span>Ingreso Fijo</span>
-                <p>₡410,000</p>
-            </div>
-            <div class="divider-line"></div>
-            <div class="summary-item green">
-                <span>Sobrante C1</span>
-                <p id="surplus-display">₡0</p>
-            </div>
-        </div>
-
-        <div class="items-container" id="flow-wrapper">
-            </div>
-
-        <div class="collapsible-wrapper">
-            <button class="collapsible-trigger" onclick="toggleFuturePanel()">
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span style="font-size:1.2rem;">🚀</span> 
-                    <span>Estructura Independiente</span>
-                </div>
-                <span class="arrow-icon" id="arrow-icon">+</span>
-            </button>
+        <div class="dashboard-layout">
             
-            <div class="collapsible-content" id="future-panel-content">
-                <div class="future-row">
-                    <div>
-                        <h4>CCSS Independiente</h4>
-                        <p>Seguro base de desarrollo</p>
-                    </div>
-                    <div class="future-val">~₡30,000</div>
+            <div class="control-panel">
+                <div class="tab-slider">
+                    <button class="tab-btn active" onclick="switchQuincena(15)">Corte 15</button>
+                    <button class="tab-btn" onclick="switchQuincena(30)">Corte 30</button>
                 </div>
-                <div class="future-row">
-                    <div>
-                        <h4>Facturación Electrónica</h4>
-                        <p>Licencia profesional digital</p>
+
+                <div class="summary-card">
+                    <div class="summary-item">
+                        <span>Ingreso Base</span>
+                        <p>₡410,000</p>
                     </div>
-                    <div class="future-val">~₡3,000</div>
-                </div>
-                <div class="future-row">
-                    <div>
-                        <h4>Retención IVA (13%)</h4>
-                        <p>Cobro retenido por factura</p>
+                    <div class="summary-item green">
+                        <span>Balance Neto</span>
+                        <p id="surplus-display">₡0</p>
                     </div>
-                    <div class="future-val" style="color:var(--text-muted); text-shadow:none;">Variable</div>
                 </div>
-                <div style="margin-top: 0.5rem; text-align: center; font-size: 0.75rem; color: var(--accent-cyan); background: rgba(0,229,255,0.05); padding: 0.5rem; border-radius: 8px;">
-                    Financiado 100% por adelantos de clientes.
+
+                <div class="collapsible-wrapper">
+                    <button class="collapsible-trigger" onclick="toggleFuturePanel()">
+                        <span>Estructura Independiente</span>
+                        <span id="arrow-icon">+</span>
+                    </button>
+                    <div class="collapsible-content" id="future-panel-content">
+                        <div class="future-row">
+                            <div>
+                                <h4>CCSS Trabajador Independiente</h4>
+                                <p>Cuota sobre base mínima</p>
+                            </div>
+                            <div class="future-val">~₡30,000</div>
+                        </div>
+                        <div class="future-row">
+                            <div>
+                                <h4>Facturador Electrónico</h4>
+                                <p>Suscripción plataforma</p>
+                            </div>
+                            <div class="future-val">~₡3,000</div>
+                        </div>
+                        <div class="future-row">
+                            <div>
+                                <h4>Retención IVA (13%)</h4>
+                                <p>Impuesto cobrado al cliente</p>
+                            </div>
+                            <div class="future-val" style="color:var(--text-muted);">Variable</div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div class="items-grid" id="flow-wrapper">
+                </div>
+
         </div>
     </div>
 
     <script>
-        // Matemática Perfecta: Ocio 30k, Comida 50k
+        // Datos limpios y ordenados según tu solicitud
         const corte15 = [
-            { name: "A Cuenta 2 (Ocio / Marihuana)", type: "Segregación", amount: "₡30,000" },
-            { name: "A Cuenta 3 (Carro: Gasolina + Reserva)", type: "Segregación", amount: "₡45,000" },
+            { name: "A Cuenta 2 (Ocio)", type: "Segregación", amount: "₡30,000" },
+            { name: "A Cuenta 3 (Gastos del Carro)", type: "Segregación", amount: "₡45,000" },
             { name: "A Cuenta 4 (Objetivo: Tu Millón)", type: "Segregación", amount: "₡5,000" },
-            { name: "Tarjetas de Crédito (4 Pagos Auditados)", type: "Deuda Fija", amount: "₡174,000" },
+            { name: "Comida", type: "Gasto Fijo", amount: "₡50,000" },
+            { name: "Tarjetas de Crédito", type: "Deuda Fija", amount: "₡174,000" },
             { name: "Abono Deuda Mamá", type: "Deuda Fija", amount: "₡10,000" },
             { name: "Cochera", type: "Gasto Fijo", amount: "₡30,000" },
-            { name: "Teléfono Tuyo (Claro Exacto)", type: "Gasto Fijo", amount: "₡43,278" },
-            { name: "Teléfono Mamá (Claro Exacto)", type: "Gasto Fijo", amount: "₡12,896" },
-            { name: "Google Workspace (Dominio + Pro)", type: "Gasto Fijo", amount: "₡6,578" },
-            { name: "Seguro SOS (Asistencia Carretera)", type: "Gasto Fijo", amount: "₡3,200" },
-            { name: "Comida (Asignación Ajustada)", type: "Gasto Fijo", amount: "₡50,000" }
+            { name: "Teléfono", type: "Gasto Fijo", amount: "₡43,278" },
+            { name: "Teléfono Mamá", type: "Gasto Fijo", amount: "₡12,896" },
+            { name: "Google Workspace", type: "Gasto Fijo", amount: "₡6,578" },
+            { name: "Seguro SOS", type: "Gasto Fijo", amount: "₡3,200" }
         ];
 
         const corte30 = [
-            { name: "A Cuenta 2 (Ocio Mínimo)", type: "Segregación", amount: "₡40,000" },
-            { name: "A Cuenta 3 (Carro: Gasolina + Reserva)", type: "Segregación", amount: "₡45,000" },
+            { name: "A Cuenta 2 (Ocio)", type: "Segregación", amount: "₡40,000" },
+            { name: "A Cuenta 3 (Gastos del Carro)", type: "Segregación", amount: "₡45,000" },
             { name: "A Cuenta 4 (Objetivo: Tu Millón)", type: "Segregación", amount: "₡5,000" },
-            { name: "Pago Total Copecaja (Préstamo)", type: "Deuda Fija", amount: "₡115,500" },
-            { name: "Pago Directo al INS", type: "Deuda Fija", amount: "₡49,000" },
-            { name: "Pago Único a Papá (Casa + Deuda)", type: "Deuda Fija", amount: "₡100,000" },
-            { name: "Comida (Quincena)", type: "Gasto Fijo", amount: "₡55,500" }
+            { name: "Comida", type: "Gasto Fijo", amount: "₡55,500" },
+            { name: "Pago Copecaja", type: "Deuda Fija", amount: "₡115,500" },
+            { name: "Pago INS", type: "Deuda Fija", amount: "₡49,000" },
+            { name: "Pago Casa (Papá)", type: "Deuda Fija", amount: "₡50,000" },
+            { name: "Abono Deuda (Papá)", type: "Deuda Fija", amount: "₡50,000" }
         ];
 
         function getTagStyle(type) {
@@ -449,9 +403,9 @@
             event.target.classList.add('active');
 
             const wrapper = document.getElementById('flow-wrapper');
-            wrapper.classList.remove('animated-list');
+            wrapper.classList.remove('animated-grid');
             void wrapper.offsetWidth; 
-            wrapper.classList.add('animated-list');
+            wrapper.classList.add('animated-grid');
 
             renderMatrix(day === 15 ? corte15 : corte30);
         }
@@ -461,10 +415,10 @@
             const icon = document.getElementById('arrow-icon');
             if (content.style.display === 'flex') {
                 content.style.display = 'none';
-                icon.classList.remove('open');
+                icon.innerText = '+';
             } else {
                 content.style.display = 'flex';
-                icon.classList.add('open');
+                icon.innerText = '-';
             }
         }
 
