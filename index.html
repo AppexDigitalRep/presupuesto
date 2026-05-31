@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>V6 | TERMINAL DE FLUJO</title>
+    <title>V6 | TERMINAL DE MANDO</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23030712%22 stroke=%22%2300e676%22 stroke-width=%228%22/><text y=%22.68em%22 x=%2250%25%22 font-family=%22monospace%22 font-size=%2255%22 font-weight=%22bold%22 fill=%22%2300e676%22 text-anchor=%22middle%22>%24</text></svg>">
+    
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-black: #05070f;
-            --bg-card: rgba(18, 24, 38, 0.65);
+            --bg-black: #02040a;
+            --bg-card: linear-gradient(135deg, rgba(19, 26, 42, 0.7) 0%, rgba(10, 14, 23, 0.8) 100%);
             --accent-emerald: #00e676;
             --accent-cyan: #00e5ff;
             --accent-amber: #ffb300;
             --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
+            --text-muted: #6b7280;
             --border-glow: rgba(255, 255, 255, 0.05);
         }
 
@@ -29,314 +31,308 @@
             background-color: var(--bg-black);
             color: var(--text-main);
             min-height: 100vh;
-            padding: 1.25rem 1rem;
+            padding: 1.5rem 1rem;
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 50% 100%, rgba(0, 230, 118, 0.03) 0%, transparent 50%);
+                radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.04) 0%, transparent 60%),
+                radial-gradient(circle at 50% 100%, rgba(0, 230, 118, 0.02) 0%, transparent 60%);
             background-attachment: fixed;
         }
 
-        .wrapper {
-            max-width: 500px;
+        .container {
+            max-width: 480px;
             margin: 0 auto;
         }
 
-        /* Header Futurista */
+        /* Top Bar */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
-            padding: 0 0.5rem;
+            padding: 0 0.2rem;
         }
 
         header h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             letter-spacing: -0.03em;
-            background: linear-gradient(135deg, #fff 30%, var(--accent-cyan));
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .status-pulse {
+        .live-badge {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 0.75rem;
+            gap: 0.4rem;
+            font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
             color: var(--accent-emerald);
-            letter-spacing: 0.05em;
+            letter-spacing: 0.06em;
+            background: rgba(0, 230, 118, 0.08);
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 230, 118, 0.15);
         }
 
-        .pulse-dot {
-            width: 8px;
-            height: 8px;
+        .badge-dot {
+            width: 6px;
+            height: 6px;
             background-color: var(--accent-emerald);
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-emerald);
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 8px var(--accent-emerald);
+            animation: pulse 2.5s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.5); }
-            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(0, 230, 118, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); }
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 12px var(--accent-emerald); }
+            100% { transform: scale(0.9); opacity: 0.6; }
         }
 
-        /* Selector Quincenal de Alta Respuesta */
-        .selector-bar {
+        /* Selector Táctil Tipo Slider */
+        .tab-slider {
             display: flex;
-            background: rgba(13, 18, 30, 0.9);
+            background: #0d111c;
             border: 1px solid var(--border-glow);
-            padding: 0.3rem;
-            border-radius: 16px;
+            padding: 0.25rem;
+            border-radius: 14px;
             margin-bottom: 1.5rem;
         }
 
-        .selector-btn {
+        .tab-btn {
             flex: 1;
             background: transparent;
             border: none;
-            color: var(--text-muted);
-            padding: 0.9rem;
-            font-size: 0.9rem;
+            color: #4b5563;
+            padding: 0.85rem;
+            font-size: 0.85rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
-            border-radius: 12px;
+            letter-spacing: 0.05em;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .selector-btn.active {
-            background: #fff;
-            color: #000;
-            box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+        .tab-btn.active {
+            background: linear-gradient(135deg, #1f2937, #111827);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(0, 230, 118, 0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
-        /* KPI Cards Optimizadas */
-        .kpi-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .kpi-box {
+        /* Bloque de Indicadores Principales */
+        .summary-card {
             background: var(--bg-card);
             border: 1px solid var(--border-glow);
-            border-radius: 18px;
-            padding: 1.2rem;
-            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
 
-        .kpi-box span {
+        .summary-item :first-child {
             font-size: 0.75rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
             display: block;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.2rem;
         }
 
-        .kpi-box p {
+        .summary-item p {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 700;
         }
 
-        .kpi-box.emerald p {
+        .summary-item.green p {
             color: var(--accent-emerald);
-            text-shadow: 0 0 10px rgba(0, 230, 118, 0.2);
+            text-shadow: 0 0 10px rgba(0, 230, 118, 0.15);
         }
 
-        /* Lista de Transacciones Móvil-First */
-        .flow-list {
+        .divider-line {
+            width: 1px;
+            height: 40px;
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* Lista de Distribución Holgada */
+        .items-container {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 0.85rem;
             margin-bottom: 2rem;
         }
 
-        .flow-card {
+        .card-item {
             background: var(--bg-card);
             border: 1px solid var(--border-glow);
             border-radius: 16px;
-            padding: 1.1rem 1.2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(10px);
-            transition: transform 0.2s ease;
-        }
-
-        .flow-card:active {
-            transform: scale(0.98);
-        }
-
-        .flow-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-            max-width: 65%;
-        }
-
-        .flow-name {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-main);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .badge {
-            display: inline-block;
-            align-self: flex-start;
-            padding: 0.2rem 0.5rem;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
-        }
-
-        .badge-seg { background: rgba(0, 229, 255, 0.1); color: var(--accent-cyan); }
-        .badge-deuda { background: rgba(255, 179, 0, 0.1); color: var(--accent-amber); }
-        .badge-fijo { background: rgba(156, 163, 175, 0.1); color: #d1d5db; }
-
-        .flow-val {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.15rem;
-            font-weight: 700;
-            text-align: right;
-            white-space: nowrap;
-        }
-
-        /* Módulo Futuro Colapsable (Épico) */
-        .collapsible-wrapper {
-            background: rgba(13, 18, 30, 0.4);
-            border: 1px dashed rgba(0, 229, 255, 0.2);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.4s ease;
-        }
-
-        .collapsible-trigger {
-            width: 100%;
-            background: transparent;
-            border: none;
             padding: 1.2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            color: var(--accent-cyan);
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .collapsible-content {
-            padding: 0 1.2rem 1.2rem 1.2rem;
-            display: none;
+        .card-details {
+            display: flex;
             flex-direction: column;
-            gap: 1rem;
-            border-top: 1px solid rgba(0, 229, 255, 0.05);
-            animation: fadeIn 0.3s ease forwards;
+            gap: 0.35rem;
+            max-width: 65%;
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #f3f4f6;
+            letter-spacing: -0.01em;
+        }
+
+        .tag {
+            display: inline-block;
+            align-self: flex-start;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .tag-seg { background: rgba(0, 229, 255, 0.08); color: var(--accent-cyan); border: 1px solid rgba(0,229,255,0.15); }
+        .tag-deuda { background: rgba(255, 179, 0, 0.08); color: var(--accent-amber); border: 1px solid rgba(255,179,0,0.15); }
+        .tag-fijo { background: rgba(156, 163, 175, 0.08); color: #d1d5db; border: 1px solid rgba(156,163,175,0.15); }
+
+        .card-amount {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-align: right;
+            color: #ffffff;
+        }
+
+        /* Sección Futura Integrada y Limpia */
+        .future-box {
+            background: rgba(10, 15, 26, 0.5);
+            border: 1px dashed rgba(0, 229, 255, 0.2);
+            border-radius: 20px;
+            padding: 1.3rem;
+            margin-top: 1rem;
+        }
+
+        .future-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
         }
 
         .future-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
         }
 
-        .future-row p { color: var(--text-muted); font-size: 0.8rem; }
+        .future-row:last-child { border-bottom: none; }
+        .future-row h4 { font-size: 0.85rem; font-weight: 600; color: #e5e7eb; }
+        .future-row p { font-size: 0.75rem; color: #6b7280; }
+        .future-val { font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--accent-cyan); }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
+        /* Animaciones */
+        @keyframes fadeInCard {
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animated-list {
+            animation: fadeInCard 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
     </style>
 </head>
 <body>
 
-    <div class="wrapper">
+    <div class="container">
         <header>
-            <h1>Terminal V6</h1>
-            <div class="status-pulse">
-                <div class="pulse-dot"></div>
-                <span>Matriz Activa</span>
+            <h1>MATRIZ V6</h1>
+            <div class="live-badge">
+                <div class="badge-dot"></div>
+                <span>Control Base</span>
             </div>
         </header>
 
-        <div class="selector-bar">
-            <button class="selector-btn active" onclick="switchTab(15)">Día 15</button>
-            <button class="selector-btn" onclick="switchTab(30)">Día 30</button>
+        <div class="tab-slider">
+            <button class="tab-btn active" onclick="switchQuincena(15)">Corte 15</button>
+            <button class="tab-btn" onclick="switchQuincena(30)">Corte 30</button>
         </div>
 
-        <div class="kpi-row">
-            <div class="kpi-box">
-                <span>Ingreso Neto</span>
+        <div class="summary-card">
+            <div class="summary-item">
+                <span>Ingreso Fijo</span>
                 <p>₡410,000</p>
             </div>
-            <div class="kpi-box emerald">
-                <span>Balance C1</span>
-                <p>₡0</p>
+            <div class="divider-line"></div>
+            <div class="summary-item green">
+                <span>Sobrante C1</span>
+                <p id="surplus-display">₡0</p>
             </div>
         </div>
 
-        <div class="flow-list" id="main-flow-container">
+        <div class="items-container" id="flow-wrapper">
             </div>
 
-        <div class="collapsible-wrapper">
-            <button class="collapsible-trigger" onclick="toggleFuturePanel()">
-                <span>👁️ Proyección Hacienda</span>
-                <span id="arrow-status">+ Expandir</span>
-            </button>
-            <div class="collapsible-content" id="future-panel-content">
-                <div class="future-row">
-                    <div>
-                        <strong style="font-size:0.9rem; display:block;">CCSS Independiente</strong>
-                        <p>Seguro base de desarrollo</p>
-                    </div>
-                    <span style="font-family:'Space Grotesk'; font-weight:700; color:var(--accent-cyan);">~₡30,000</span>
+        <div class="future-box">
+            <div class="future-title">
+                <span>Estructura Independiente</span>
+                <span style="font-size:0.7rem; color:#6b7280;">Proyección</span>
+            </div>
+            <div class="future-row">
+                <div>
+                    <h4>CCSS Trabajador Independiente</h4>
+                    <p>Caja base mínima declarada</p>
                 </div>
-                <div class="future-row">
-                    <div>
-                        <strong style="font-size:0.9rem; display:block;">Facturación Electrónica</strong>
-                        <p>Licencia profesional digital</p>
-                    </div>
-                    <span style="font-family:'Space Grotesk'; font-weight:700; color:var(--accent-cyan);">~₡3,000</span>
+                <div class="future-val">~₡30,000</div>
+            </div>
+            <div class="future-row">
+                <div>
+                    <h4>Facturador Electrónico</h4>
+                    <p>Licencia digital GTI / FacturaPro</p>
                 </div>
-                <div style="font-size: 0.75rem; text-align: center; color: var(--text-muted); background: rgba(255,255,255,0.02); padding: 0.6rem; border-radius: 8px;">
-                    Financiado de forma autónoma por adelantos de proyectos.
-                </div>
+                <div class="future-val">~₡3,000</div>
             </div>
         </div>
     </div>
 
     <script>
-        const data15 = [
+        // Data pulida al centavo con tus montos innegociables
+        const corte15 = [
             { name: "A Cuenta 2 (Ocio / Marihuana)", type: "Segregación", amount: "₡30,000" },
             { name: "A Cuenta 3 (Carro: Gasolina + Reserva)", type: "Segregación", amount: "₡45,000" },
             { name: "A Cuenta 4 (Objetivo: Tu Millón)", type: "Segregación", amount: "₡5,000" },
-            { name: "Tarjetas de Crédito (4 Pagos Auditados)", type: "Deuda Fija", amount: "₡174,000" },
+            { name: "Tarjetas de Crédito (4 Mínimos Auditados)", type: "Deuda Fija", amount: "₡174,000" },
             { name: "Abono Deuda Mamá", type: "Deuda Fija", amount: "₡10,000" },
             { name: "Cochera", type: "Gasto Fijo", amount: "₡30,000" },
-            { name: "Teléfono Tuyo (Claro Exacto)", type: "Gasto Fijo", amount: "₡43,278" },
-            { name: "Teléfono Mamá (Claro Exacto)", type: "Gasto Fijo", amount: "₡12,896" },
+            { name: "Teléfono Tuyo (Claro Postpago)", type: "Gasto Fijo", amount: "₡43,278" },
+            { name: "Teléfono Mamá (Claro Postpago)", type: "Gasto Fijo", amount: "₡12,896" },
             { name: "Google Workspace (Dominio + Pro)", type: "Gasto Fijo", amount: "₡6,578" },
-            { name: "Seguro SOS (Asistencia / Clavos)", type: "Gasto Fijo", amount: "₡3,200" },
+            { name: "Seguro SOS (Asistencia Carretera)", type: "Gasto Fijo", amount: "₡3,200" },
             { name: "Comida (Asignación Fija)", type: "Gasto Fijo", amount: "₡50,000" }
         ];
 
-        const data30 = [
+        const corte30 = [
             { name: "A Cuenta 2 (Ocio Mínimo)", type: "Segregación", amount: "₡40,000" },
             { name: "A Cuenta 3 (Carro: Gasolina + Reserva)", type: "Segregación", amount: "₡45,000" },
             { name: "A Cuenta 4 (Objetivo: Tu Millón)", type: "Segregación", amount: "₡5,000" },
@@ -346,52 +342,40 @@
             { name: "Comida (Quincena)", type: "Gasto Fijo", amount: "₡55,500" }
         ];
 
-        function getBadgeClass(type) {
-            if (type === "Segregación") return "badge-seg";
-            if (type === "Deuda Fija") return "badge-deuda";
-            return "badge-fijo";
+        function getTagStyle(type) {
+            if (type === "Segregación") return "tag-seg";
+            if (type === "Deuda Fija") return "tag-deuda";
+            return "tag-fijo";
         }
 
-        function renderList(data) {
-            const container = document.getElementById('main-flow-container');
-            container.innerHTML = data.map(item => `
-                <div class="flow-card">
-                    <div class="flow-info">
-                        <span class="flow-name">${item.name}</span>
-                        <span class="badge ${getBadgeClass(item.type)}">${item.type}</span>
+        function renderMatrix(data) {
+            const wrapper = document.getElementById('flow-wrapper');
+            wrapper.innerHTML = data.map(item => `
+                <div class="card-item">
+                    <div class="card-details">
+                        <span class="card-title">${item.name}</span>
+                        <span class="tag ${getTagStyle(item.type)}">${item.type}</span>
                     </div>
-                    <div class="flow-val">${item.amount}</div>
+                    <div class="card-amount">${item.amount}</div>
                 </div>
             `).join('');
         }
 
-        function switchTab(day) {
-            const buttons = document.querySelectorAll('.selector-btn');
+        function switchQuincena(day) {
+            const buttons = document.querySelectorAll('.tab-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
 
-            const container = document.getElementById('main-flow-container');
-            container.style.animation = 'none';
-            void container.offsetHeight; // Trigger reflow
-            container.style.animation = 'fadeIn 0.3s ease forwards';
+            const wrapper = document.getElementById('flow-wrapper');
+            wrapper.classList.remove('animated-list');
+            void wrapper.offsetWidth; // Trigger reflow mecánico de CSS
+            wrapper.classList.add('animated-list');
 
-            renderList(day === 15 ? data15 : data30);
+            renderMatrix(day === 15 ? corte15 : corte30);
         }
 
-        function toggleFuturePanel() {
-            const content = document.getElementById('future-panel-content');
-            const arrow = document.getElementById('arrow-status');
-            if (content.style.display === 'flex') {
-                content.style.display = 'none';
-                arrow.innerText = '+ Expandir';
-            } else {
-                content.style.display = 'flex';
-                arrow.innerText = '- Ocultar';
-            }
-        }
-
-        // Render inicial
-        window.onload = () => { renderList(data15); };
+        // Arranque Inicial
+        window.onload = () => { renderMatrix(corte15); };
     </script>
 </body>
 </html>
