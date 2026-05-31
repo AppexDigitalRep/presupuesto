@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CONTROL DEL MILLÓN</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M50 5 L93 25 L93 75 L50 95 L7 75 L7 25 Z%22 fill=%22%2301060b%22 stroke=%22%2300fa9a%22 stroke-width=%225%22/><text y=%2252%25%22 x=%2250%25%22 dominant-baseline=%22middle%22 font-family=%22sans-serif%22 font-size=%2235%22 font-weight=%22bold%22 fill=%22%2300fa9a%22 text-anchor=%22middle%22>V6</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M50 5 L93 25 L93 75 L50 95 L7 75 L7 25 Z%22 fill=%22%2301060b%22 stroke=%22%2300fa9a%22 stroke-width=%225%22/><text y=%2252%25%22 x=%2250%25%22 dominant-baseline=%22middle%22 font-family=%22sans-serif%22 font-size=%2235%22 font-weight=%22bold%22 fill=%22%2300fa9a%22 text-anchor=%22middle%22>M$</text></svg>">
     
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -27,7 +27,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Fondo Magnético */
         body {
             background-color: var(--bg-black);
             color: var(--text-main);
@@ -59,7 +58,6 @@
             margin: 0 auto;
         }
 
-        /* Título Vibrante */
         header {
             text-align: center;
             margin-bottom: 2rem;
@@ -80,7 +78,6 @@
             100% { text-shadow: 0 0 10px rgba(0,250,154,0.3); transform: translateY(0); }
         }
 
-        /* Layout (Fijo en compu, fluido en móvil) */
         .dashboard-layout {
             display: grid;
             grid-template-columns: 1fr;
@@ -97,11 +94,10 @@
             }
             .control-panel {
                 position: sticky;
-                top: 1rem; /* Solo fijo en compu para evitar scroll */
+                top: 1rem; 
             }
         }
 
-        /* Panel Izquierdo */
         .control-panel {
             display: flex;
             flex-direction: column;
@@ -176,7 +172,6 @@
             text-shadow: 0 0 15px rgba(255, 71, 87, 0.3);
         }
 
-        /* Panel Derecho (Gastos Comprimidos para Cero Scroll) */
         .items-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -192,7 +187,7 @@
             border: 1px solid rgba(255,255,255,0.03);
             border-left: 3px solid rgba(255,255,255,0.1);
             border-radius: 12px;
-            padding: 0.85rem 1rem; /* Padding reducido para evitar scroll */
+            padding: 0.85rem 1rem; 
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -240,7 +235,6 @@
             color: #ffffff;
         }
 
-        /* Módulo Futuro Colapsable */
         .collapsible-wrapper {
             background: rgba(4, 9, 15, 0.5);
             border: 1px dashed rgba(0, 250, 154, 0.3);
@@ -356,7 +350,6 @@
     </div>
 
     <script>
-        // Datos limpios
         const corte15 = [
             { name: "A Cuenta 2 (Ocio)", type: "Segregación", amount: "₡30,000" },
             { name: "A Cuenta 3 (Gastos del Carro)", type: "Segregación", amount: "₡45,000" },
@@ -397,7 +390,7 @@
             const surplusDisplay = document.getElementById('surplus-display');
             const surplusContainer = document.getElementById('surplus-container');
             
-            // Calculadora Automática de Balance
+            // Calculadora Automática
             const totalGastos = data.reduce((acc, curr) => acc + parseMonto(curr.amount), 0);
             const balance = 410000 - totalGastos;
             
