@@ -214,7 +214,7 @@
             </div>
             <div class="summary-card surplus">
                 <h3>Sobrante en Cuenta 1</h3>
-                <div id="surplus-amount"><p>₡0</p></div>
+                <div id="surplus-amount"><p>₡48,048</p></div>
             </div>
         </div>
 
@@ -248,7 +248,7 @@
             { name: "Teléfono Mamá (Claro Postpago)", type: "Gasto Fijo", amount: "₡12,896" },
             { name: "Google Workspace (Apex + Gemini Pro)", type: "Gasto Fijo", amount: "₡6,578" },
             { name: "Seguro SOS (Asistencia Carretera)", type: "Gasto Fijo", amount: "₡3,200" },
-            { name: "Comida (Saldo Equilibrado)", type: "Gasto Fijo", amount: "₡108,048" }
+            { name: "Comida (Quincenal Real)", type: "Gasto Fijo", amount: "₡60,000" }
         ];
 
         const data30 = [
@@ -283,7 +283,7 @@
 
             let currentData = day === 15 ? data15 : data30;
             title.innerText = `Distribución del Día ${day}`;
-            surplus.innerHTML = `<p style="color: #cbd5e1;">₡0</p>`;
+            surplus.innerHTML = day === 15 ? `<p>₡48,048</p>` : `<p style="color: #cbd5e1;">₡0</p>`;
 
             tbody.innerHTML = currentData.map(item => `
                 <tr>
