@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soporte del Millón | Control de Flujo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>SOPORTE DEL MILLÓN | Terminal de Mando</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #0b0f19;
-            --bg-card: rgba(22, 30, 49, 0.7);
-            --border-glow: rgba(0, 230, 118, 0.15);
-            --accent-green: #00e676;
-            --accent-gold: #ffd700;
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --glass-border: rgba(255, 255, 255, 0.05);
+            --bg-base: #030712;
+            --bg-surface: rgba(17, 24, 39, 0.55);
+            --bg-surface-glow: rgba(0, 230, 118, 0.03);
+            --accent-emerald: #00e676;
+            --accent-cyan: #00e5ff;
+            --accent-amber: #ffb300;
+            --text-primary: #f9fafb;
+            --text-muted: #9ca3af;
+            --border-alpha: rgba(255, 255, 255, 0.06);
+            --glow-emerald: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -25,270 +27,426 @@
         }
 
         body {
-            background-color: var(--bg-main);
+            background-color: var(--bg-base);
             color: var(--text-primary);
             min-height: 100vh;
-            padding: 2rem 1rem;
+            padding: 3rem 1.5rem;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 230, 118, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.03) 0%, transparent 40%);
+                radial-gradient(circle at 5% 10%, rgba(0, 230, 118, 0.07) 0%, transparent 35%),
+                radial-gradient(circle at 95% 90%, rgba(0, 229, 255, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 1) 0%, var(--bg-base) 100%);
+            background-attachment: fixed;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
+        /* Header de Élite */
         header {
-            text-align: center;
-            margin-bottom: 2.5rem;
+            text-align: left;
+            margin-bottom: 3.5rem;
+            position: relative;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-alpha);
         }
 
         header h1 {
-            font-size: 2.2rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
             font-weight: 700;
-            letter-spacing: -0.05em;
-            background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-green));
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--text-primary) 40%, var(--accent-cyan), var(--accent-emerald));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
         }
 
         header p {
-            color: var(--text-secondary);
-            font-size: 1rem;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-top: 0.3rem;
+            letter-spacing: 0.02em;
         }
 
-        .toggle-container {
+        /* Dashboard Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 2.2fr 1.2fr;
+            }
+        }
+
+        /* Selector Quincenal de Alta Fidelidad */
+        .toggle-matrix {
             display: flex;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid var(--glass-border);
-            padding: 0.4rem;
-            border-radius: 14px;
+            background: rgba(17, 24, 39, 0.9);
+            border: 1px solid var(--border-alpha);
+            padding: 0.35rem;
+            border-radius: 16px;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
-        .toggle-btn {
+        .matrix-btn {
             flex: 1;
             background: transparent;
             border: none;
-            color: var(--text-secondary);
-            padding: 0.8rem;
+            color: var(--text-muted);
+            padding: 1rem;
             font-size: 1rem;
-            font-weight: 600;
-            border-radius: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .toggle-btn.active {
-            background: var(--accent-green);
-            color: var(--bg-main);
-            box-shadow: 0 4px 15px rgba(0, 230, 118, 0.4);
+        .matrix-btn.active {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #000;
+            font-weight: 700;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);
         }
 
-        .summary-grid {
+        /* Paneles Principales */
+        .glass-panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-alpha);
+            border-radius: 24px;
+            padding: 2rem;
+            backdrop-filter: blur(24px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+
+        /* Métricas Premium */
+        .metrics-bar {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        .summary-card {
-            background: var(--bg-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 1.2rem;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        .kpi-card {
+            background: rgba(31, 41, 55, 0.4);
+            border: 1px solid var(--border-alpha);
+            border-radius: 18px;
+            padding: 1.5rem;
+            position: relative;
         }
 
-        .summary-card h3 {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
+        .kpi-card h3 {
+            font-size: 0.8rem;
+            color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
             margin-bottom: 0.5rem;
         }
 
-        .summary-card p {
-            font-size: 1.6rem;
+        .kpi-card p {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
             font-weight: 700;
         }
 
-        .summary-card.income p { color: var(--text-primary); }
-        .summary-card.surplus p { color: var(--accent-green); }
-
-        .matrix-box {
-            background: var(--bg-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 1.5rem;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        .kpi-card.surplus p {
+            color: var(--accent-emerald);
+            text-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
         }
 
-        .matrix-box h2 {
-            font-size: 1.25rem;
-            margin-bottom: 1.2rem;
-            font-weight: 600;
+        /* Tablas Corporativas */
+        .matrix-title-area {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 0.5rem;
+            margin-bottom: 1.5rem;
         }
 
-        .table-responsive {
-            overflow-x: auto;
+        .matrix-title-area h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: -0.02em;
+        }
+
+        .status-badge {
+            background: rgba(0, 230, 118, 0.1);
+            color: var(--accent-emerald);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 1px solid rgba(0, 230, 118, 0.2);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            text-align: left;
         }
 
         th {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 700;
             text-transform: uppercase;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: 0.05em;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         td {
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 0.95rem;
+            padding: 1.2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        tr:hover td {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.01);
         }
 
         td.amount {
-            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
             text-align: right;
         }
 
-        .tag {
+        /* Badges de Estratificación */
+        .pill {
             display: inline-block;
-            padding: 0.25rem 0.6rem;
-            border-radius: 6px;
+            padding: 0.3rem 0.7rem;
+            border-radius: 8px;
             font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+        .pill-segregacion { background: rgba(0, 229, 255, 0.12); color: var(--accent-cyan); border: 1px solid rgba(0,229,255,0.2); }
+        .pill-deuda { background: rgba(255, 179, 0, 0.12); color: var(--accent-amber); border: 1px solid rgba(255,179,0,0.2); }
+        .pill-fijo { background: rgba(156, 163, 175, 0.12); color: #d1d5db; border: 1px solid rgba(156,163,175,0.2); }
+
+        /* Módulo de Proyección Independiente */
+        .projection-panel {
+            background: linear-gradient(145deg, rgba(17, 24, 39, 0.85), rgba(11, 15, 25, 0.95));
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.05);
+        }
+
+        .projection-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .projection-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0,229,255,0.2);
+        }
+
+        .badge-future {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .future-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .future-item:last-child { border-bottom: none; }
+
+        .future-item-info h4 {
+            font-size: 0.95rem;
             font-weight: 600;
+            color: var(--text-primary);
         }
 
-        .tag-segregacion { background: rgba(0, 230, 118, 0.15); color: var(--accent-green); }
-        .tag-deuda { background: rgba(255, 215, 0, 0.15); color: var(--accent-gold); }
-        .tag-fijo { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; }
-
-        tr:last-child td {
-            border-bottom: none;
+        .future-item-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.1rem;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        .future-amount {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        /* Animación de entrada */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .animated-view {
-            animation: fadeIn 0.4s ease forwards;
-        }
+        .animated-view { animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <header>
-            <h1>SOPORTE DEL MILLÓN</h1>
-            <p>Estructura y Dominio de Flujo Quincenal</p>
+            <h1>Terminal del Millón</h1>
+            <p>Matriz Autónoma de Ingeniería y Control Financiero</p>
         </header>
 
-        <div class="toggle-container">
-            <button class="toggle-btn active" onclick="switchView(15)">Corte de los 15</button>
-            <button class="toggle-btn" onclick="switchView(30)">Corte de los 30</button>
+        <div class="toggle-matrix">
+            <button class="matrix-btn active" onclick="switchView(15)">Corte Quincenal (Día 15)</button>
+            <button class="matrix-btn" onclick="switchView(30)">Corte de Cierre (Día 30)</button>
         </div>
 
-        <div class="summary-grid">
-            <div class="summary-card income">
-                <h3>Ingreso Neto Quincenal</h3>
-                <p>₡410,000</p>
-            </div>
-            <div class="summary-card surplus">
-                <h3>Sobrante en Cuenta 1</h3>
-                <div id="surplus-amount"><p>₡48,048</p></div>
-            </div>
-        </div>
+        <div class="dashboard-grid">
+            
+            <div class="glass-panel">
+                <div class="metrics-bar">
+                    <div class="kpi-card">
+                        <h3>Ingreso Asignado</h3>
+                        <p>₡410,000</p>
+                    </div>
+                    <div class="kpi-card surplus">
+                        <h3>Balance Neto C1</h3>
+                        <div id="surplus-amount"><p>₡0</p></div>
+                    </div>
+                </div>
 
-        <div class="matrix-box">
-            <h2 id="matrix-title">Distribución del Día 15</h2>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Concepto / Destino</th>
-                            <th>Tipo Acción</th>
-                            <th style="text-align: right;">Monto</th>
-                        </tr>
-                    </thead>
-                    <tbody id="matrix-body">
-                    </tbody>
-                </table>
+                <div class="matrix-title-area">
+                    <h2 id="matrix-title">Distribución del Día 15</h2>
+                    <span class="status-badge">Estructura Blindada</span>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Destino Contractual</th>
+                                <th>Tipo Acción</th>
+                                <th style="text-align: right;">Monto Absoluto</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matrix-body">
+                            </tbody>
+                    </table>
+                </div>
             </div>
+
+            <div class="glass-panel projection-panel">
+                <div class="projection-header">
+                    <h2>Estructura Independiente</h2>
+                    <span class="badge-future">Próximo Hito</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.4;">
+                    Ecosistema proyectado para múltiples actividades económicas (Hacienda / CCSS). Financiado de forma autónoma mediante adelantos de proyectos.
+                </p>
+
+                <div class="future-item">
+                    <div class="future-item-info">
+                        <h4>CCSS Independiente</h4>
+                        <p>Seguro sobre base mínima estimada</p>
+                    </div>
+                    <div class="future-amount">~₡30,000</div>
+                </div>
+
+                <div class="future-item">
+                    <div class="future-item-info">
+                        <h4>Facturador Electrónico</h4>
+                        <p>Licencia profesional GTI / FacturaPro</p>
+                    </div>
+                    <div class="future-amount">~₡3,000</div>
+                </div>
+
+                <div class="future-item">
+                    <div class="future-item-info">
+                        <h4>Retención IVA (13%)</h4>
+                        <p>Flujo externo cobrado al cliente</p>
+                    </div>
+                    <div class="future-amount" style="color: var(--text-muted);">Por Factura</div>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1rem; background: rgba(0, 229, 255, 0.05); border-radius: 12px; border: 1px dashed rgba(0,229,255,0.2); text-align: center; font-size: 0.85rem; color: var(--accent-cyan); font-weight: 600;">
+                    💡 Regla de Oro: El negocio paga su legalidad.
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script>
         const data15 = [
-            { name: "A Cuenta 2 (Ocio / Marihuana)", type: "Segregación", amount: "₡40,000" },
+            { name: "A Cuenta 2 (Ocio / Marihuana Calibrado)", type: "Segregación", amount: "₡30,000" },
             { name: "A Cuenta 3 (Carro: Gasolina + Reserva)", type: "Segregación", amount: "₡45,000" },
             { name: "A Cuenta 4 (Objetivo: Tu Millón)", type: "Segregación", amount: "₡5,000" },
-            { name: "Tarjetas de Crédito (Mínimos Auditados)", type: "Deuda Fija", amount: "₡106,000" },
+            { name: "Tarjetas de Crédito (Tendencia Real 4 frentes)", type: "Deuda Fija", amount: "₡174,000" },
             { name: "Abono Deuda Mamá", type: "Deuda Fija", amount: "₡10,000" },
             { name: "Cochera", type: "Gasto Fijo", amount: "₡30,000" },
-            { name: "Teléfono Tuyo (Claro Postpago)", type: "Gasto Fijo", amount: "₡43,278" },
-            { name: "Teléfono Mamá (Claro Postpago)", type: "Gasto Fijo", amount: "₡12,896" },
-            { name: "Google Workspace (Apex + Gemini Pro)", type: "Gasto Fijo", amount: "₡6,578" },
-            { name: "Seguro SOS (Asistencia Carretera)", type: "Gasto Fijo", amount: "₡3,200" },
-            { name: "Comida (Quincenal Real)", type: "Gasto Fijo", amount: "₡60,000" }
+            { name: "Teléfono Tuyo (Claro Postpago Exacto)", type: "Gasto Fijo", amount: "₡43,278" },
+            { name: "Teléfono Mamá (Claro Postpago Exacto)", type: "Gasto Fijo", amount: "₡12,896" },
+            { name: "Google Workspace (Dominio Apex + Gemini Pro)", type: "Gasto Fijo", amount: "₡6,578" },
+            { name: "Seguro SOS (Asistencia Carretera / Clavos)", type: "Gasto Fijo", amount: "₡3,200" },
+            { name: "Comida (Asignación Fija)", type: "Gasto Fijo", amount: "₡50,000" }
         ];
 
         const data30 = [
-            { name: "A Cuenta 2 (Ocio / Marihuana)", type: "Segregación", amount: "₡40,000" },
+            { name: "A Cuenta 2 (Ocio Mínimo)", type: "Segregación", amount: "₡40,000" },
             { name: "A Cuenta 3 (Carro: Gasolina + Reserva)", type: "Segregación", amount: "₡45,000" },
             { name: "A Cuenta 4 (Objetivo: Tu Millón)", type: "Segregación", amount: "₡5,000" },
             { name: "Pago Total Copecaja (Préstamo + Capital)", type: "Deuda Fija", amount: "₡115,500" },
             { name: "Pago Directo al INS", type: "Deuda Fija", amount: "₡49,000" },
-            { name: "Pago Único a Papá (Casa + Deuda)", type: "Deuda Fija", amount: "₡100,000" },
-            { name: "Comida (Quincena)", type: "Gasto Fijo", amount: "₡55,500" },
-            { name: "🚨 FUTURO: CCSS Independiente (Fase Desarrollo)", type: "Gasto Fijo", amount: "~₡30,000" }
+            { name: "Pago Único a Papá (Casa + Deuda Vencida)", type: "Deuda Fija", amount: "₡100,000" },
+            { name: "Comida (Quincena)", type: "Gasto Fijo", amount: "₡55,500" }
         ];
 
-        function getTagClass(type) {
-            if (type === "Segregación") return "tag-segregacion";
-            if (type === "Deuda Fija") return "tag-deuda";
-            return "tag-fijo";
+        function getPillClass(type) {
+            if (type === "Segregación") return "pill-segregacion";
+            if (type === "Deuda Fija") return "pill-deuda";
+            return "pill-fijo";
         }
 
         function switchView(day) {
-            const buttons = document.querySelectorAll('.toggle-btn');
+            const buttons = document.querySelectorAll('.matrix-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
 
             const tbody = document.getElementById('matrix-body');
             const title = document.getElementById('matrix-title');
-            const surplus = document.getElementById('surplus-amount');
             
             tbody.classList.remove('animated-view');
-            void tbody.offsetWidth;
+            void tbody.offsetWidth; // Trigger reflow
             tbody.classList.add('animated-view');
 
             let currentData = day === 15 ? data15 : data30;
             title.innerText = `Distribución del Día ${day}`;
-            surplus.innerHTML = day === 15 ? `<p>₡48,048</p>` : `<p style="color: #cbd5e1;">₡0</p>`;
 
             tbody.innerHTML = currentData.map(item => `
                 <tr>
                     <td>${item.name}</td>
-                    <td><span class="tag ${getTagClass(item.type)}">${item.type}</span></td>
+                    <td><span class="pill ${getPillClass(item.type)}">${item.type}</span></td>
                     <td class="amount">${item.amount}</td>
                 </tr>
             `).join('');
@@ -299,7 +457,7 @@
             tbody.innerHTML = data15.map(item => `
                 <tr>
                     <td>${item.name}</td>
-                    <td><span class="tag ${getTagClass(item.type)}">${item.type}</span></td>
+                    <td><span class="pill ${getPillClass(item.type)}">${item.type}</span></td>
                     <td class="amount">${item.amount}</td>
                 </tr>
             `).join('');
