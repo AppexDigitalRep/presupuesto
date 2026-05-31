@@ -176,6 +176,8 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 0.75rem;
+            /* El touch-action ayuda a que el scroll vertical fluya, permitiendo atrapar gestos horizontales */
+            touch-action: pan-y; 
         }
 
         @media (min-width: 1000px) {
@@ -297,8 +299,8 @@
             
             <div class="control-panel">
                 <div class="tab-slider">
-                    <button class="tab-btn active" onclick="switchQuincena(15)">Corte 15</button>
-                    <button class="tab-btn" onclick="switchQuincena(30)">Corte 30</button>
+                    <button id="btn-15" class="tab-btn active" onclick="switchQuincena(15)">Corte 15</button>
+                    <button id="btn-30" class="tab-btn" onclick="switchQuincena(30)">Corte 30</button>
                 </div>
 
                 <div class="summary-card">
@@ -350,13 +352,17 @@
     </div>
 
     <script>
+        // Data Reordenada Arquitectónicamente
         const corte15 = [
+            // Bloque: Segregación
             { name: "A Cuenta 2 (Ocio)", type: "Segregación", amount: "₡30,000" },
             { name: "A Cuenta 3 (Gastos del Carro)", type: "Segregación", amount: "₡45,000" },
             { name: "A Cuenta 4 (Objetivo: Tu Millón)", type: "Segregación", amount: "₡5,000" },
-            { name: "Comida", type: "Gasto Fijo", amount: "₡50,000" },
+            // Bloque: Deuda Fija
             { name: "Tarjetas de Crédito", type: "Deuda Fija", amount: "₡174,000" },
             { name: "Abono Deuda Mamá", type: "Deuda Fija", amount: "₡10,000" },
+            // Bloque: Gasto Fijo
+            { name: "Comida", type: "Gasto Fijo", amount: "₡50,000" }, // Comida Encabeza Gastos Fijos
             { name: "Cochera", type: "Gasto Fijo", amount: "₡30,000" },
             { name: "Teléfono", type: "Gasto Fijo", amount: "₡43,278" },
             { name: "Teléfono Mamá", type: "Gasto Fijo", amount: "₡12,896" },
@@ -365,15 +371,20 @@
         ];
 
         const corte30 = [
+            // Bloque: Segregación
             { name: "A Cuenta 2 (Ocio)", type: "Segregación", amount: "₡30,000" },
             { name: "A Cuenta 3 (Gastos del Carro)", type: "Segregación", amount: "₡45,000" },
             { name: "A Cuenta 4 (Objetivo: Tu Millón)", type: "Segregación", amount: "₡5,000" },
-            { name: "Comida", type: "Gasto Fijo", amount: "₡50,000" },
+            // Bloque: Deuda Fija
             { name: "Pago Copecaja", type: "Deuda Fija", amount: "₡115,500" },
             { name: "Pago INS", type: "Deuda Fija", amount: "₡49,000" },
             { name: "Pago Casa (Papá)", type: "Deuda Fija", amount: "₡50,000" },
-            { name: "Abono Deuda (Papá)", type: "Deuda Fija", amount: "₡50,000" }
+            { name: "Abono Deuda (Papá)", type: "Deuda Fija", amount: "₡50,000" },
+            // Bloque: Gasto Fijo
+            { name: "Comida", type: "Gasto Fijo", amount: "₡50,000" } // Comida Cierra
         ];
+
+        let currentTab = 15;
 
         function parseMonto(montoStr) {
             return parseInt(montoStr.replace(/[^0-9]/g, ''));
@@ -390,7 +401,7 @@
             const surplusDisplay = document.getElementById('surplus-display');
             const surplusContainer = document.getElementById('surplus-container');
             
-            // Calculadora Automática
+            // Calculadora
             const totalGastos = data.reduce((acc, curr) => acc + parseMonto(curr.amount), 0);
             const balance = 410000 - totalGastos;
             
@@ -414,9 +425,12 @@
         }
 
         function switchQuincena(day) {
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (currentTab === day) return;
+            currentTab = day;
+
+            document.getElementById('btn-15').classList.remove('active');
+            document.getElementById('btn-30').classList.remove('active');
+            document.getElementById(`btn-${day}`).classList.add('active');
 
             const wrapper = document.getElementById('flow-wrapper');
             wrapper.classList.remove('animated-grid');
@@ -438,6 +452,34 @@
             }
         }
 
+        // ---- Motor de Gestos (Swipe) para Móvil ----
+        let touchstartX = 0;
+        let touchendX = 0;
+        const SWIPE_THRESHOLD = 60; // Píxeles de deslizamiento necesarios
+
+        function handleGesture() {
+            // Deslizó hacia la izquierda
+            if (touchendX < touchstartX - SWIPE_THRESHOLD) {
+                switchQuincena(30);
+            }
+            // Deslizó hacia la derecha
+            if (touchendX > touchstartX + SWIPE_THRESHOLD) {
+                switchQuincena(15);
+            }
+        }
+
+        const flowWrapper = document.getElementById('flow-wrapper');
+        
+        flowWrapper.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        flowWrapper.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleGesture();
+        }, {passive: true});
+
+        // Inicio
         window.onload = () => { renderMatrix(corte15); };
     </script>
 </body>
